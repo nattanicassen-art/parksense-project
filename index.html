@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ParkSense – สถานะที่จอดรถ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrap">
+        <div class="hero">
+            <header>
+                <div class="lg">
+                    <i>P</i>
+                    <div>
+                        <b>ParkSense</b>
+                        <small>สถานะที่จอดรถ</small>
+                    </div>
+                </div>
+                <div class="rt">
+                    <span class="live"><b></b>LIVE</span>
+                    <span id="clk"></span>
+                </div>
+            </header>
+            <div class="sum">
+                <div class="c g">
+                    <span class="lamp g"></span>
+                    <span>ว่าง</span>
+                    <b id="nfree">0</b>
+                </div>
+                <div class="c r">
+                    <span class="lamp r"></span>
+                    <span>ไม่ว่าง</span>
+                    <b id="nocc">0</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="lgd">
+            <span><i style="background:#22c55e55;border:2px solid #16a34a"></i>ว่าง</span>
+            <span><i style="background:#ef444430;border:1px solid var(--tx)"></i>มีรถจอด</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
