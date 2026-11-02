@@ -12,10 +12,11 @@
     .admin-title { font-size: 22px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
     .badge-admin { background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
     
-    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
+    /* สรุป 3 ตัวเลขหลัก */
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 15px; }
     .stat-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px; text-align: center; }
     .stat-num { font-size: 24px; font-weight: bold; margin-top: 5px; }
-    .text-green { color: #10b981; } .text-red { color: #ef4444; } .text-yellow { color: #f59e0b; } .text-blue { color: #3b82f6; }
+    .text-green { color: #10b981; } .text-red { color: #ef4444; } .text-yellow { color: #f59e0b; }
 
     .floors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
     .floor-card { background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 12px; transition: 0.3s; }
@@ -35,7 +36,6 @@
 
     .slot.available { border-color: #10b981; background: rgba(16, 185, 129, 0.1); color: #10b981; }
     .slot.occupied { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-    .slot.reserved { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
     .slot.error { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
 
     .admin-tools { margin-top: 15px; background: #1e293b; border-radius: 12px; padding: 15px; border: 1px solid #334155; }
@@ -53,10 +53,10 @@
     <div style="font-size: 13px; color: #94a3b8;" id="live-clock">● LIVE</div>
   </div>
 
+  <!-- สรุปตัวเลขสถานะลานจอด -->
   <div class="stats-bar">
     <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">ว่างทั้งหมด</div><div class="stat-num text-green" id="count-available">0</div></div>
     <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">ไม่ว่าง</div><div class="stat-num text-red" id="count-occupied">0</div></div>
-    <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">จองไว้ (VIP)</div><div class="stat-num text-blue" id="count-reserved">0</div></div>
     <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">เซนเซอร์มีปัญหา</div><div class="stat-num text-yellow" id="count-error">0</div></div>
   </div>
 
@@ -108,7 +108,7 @@
 
   <div class="admin-tools">
     <div style="font-weight: bold; font-size: 14px;">📋 บันทึกการทำงานฮาร์ดแวร์และเซนเซอร์ (Live ThingsBoard Telemetry)</div>
-    <div class="instruction-note">💡 ข้อมูลถูกเชื่อมต่อกับ ESP32 และ ThingsBoard Real-time | แอดมินสามารถคลิก Override สถานะชั่วคราวได้</div>
+    <div class="instruction-note">💡 **คำแนะนำการใช้งาน:** คลิกที่ช่องจอดบนผังเพื่อเปลี่ยนสถานะวนไป: **ว่าง ➔ ไม่ว่าง ➔ เซนเซอร์ขัดข้อง**</div>
     <div class="log-box" id="log-output">
       > [System initialized] กำลังเชื่อมต่อสัญญาณกับ ThingsBoard Cloud...<br>
     </div>
@@ -117,11 +117,11 @@
   <script>
     const floors = [4, 3, 2, 1];
     const spotsPerFloor = 6;
-    const states = ['available', 'occupied', 'reserved', 'error'];
+    // ลบ 'reserved' ออก เหลือแค่ 3 สถานะ
+    const states = ['available', 'occupied', 'error'];
     const stateLabels = {
       'available': 'ว่าง',
       'occupied': 'ไม่ว่าง',
-      'reserved': 'จองแล้ว',
       'error': '⚠️ เซนเซอร์ขัดข้อง'
     };
 
@@ -177,17 +177,15 @@
     }
 
     function updateStats() {
-      let available = 0, occupied = 0, reserved = 0, error = 0;
+      let available = 0, occupied = 0, error = 0;
       Object.values(parkingData).forEach(state => {
         if (state === 'available') available++;
         if (state === 'occupied') occupied++;
-        if (state === 'reserved') reserved++;
         if (state === 'error') error++;
       });
 
       document.getElementById('count-available').innerText = available;
       document.getElementById('count-occupied').innerText = occupied;
-      document.getElementById('count-reserved').innerText = reserved;
       document.getElementById('count-error').innerText = error;
     }
 
@@ -198,8 +196,6 @@
     }
 
     function simulateIncomingSensorData(spotId, isOccupied, distance) {
-      if (parkingData[spotId] === 'reserved') return;
-
       const newState = isOccupied ? 'occupied' : 'available';
       if (parkingData[spotId] !== newState) {
         updateSingleSpot(spotId, newState);
