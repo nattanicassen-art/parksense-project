@@ -64,66 +64,7 @@
         </div>
         <p class="upd" id="upd">ยังไม่ได้รับข้อมูลจากบอร์ด</p>
     </div>
-<script>
-  // 1. นำรหัส 2 ตัวจากขั้นตอนที่ 1 มาวางแทนที่ตรงนี้
-  const TB_PUBLIC_ID = "วาง_Public_ID_ที่นี่";
-  const TB_DEVICE_ID = "วาง_Device_ID_ที่นี่";
-  const TB_HOST      = "https://thingsboard.cloud";
 
-  let jwtToken = null;
-
-  // ขอ Token แบบ Public (อ่านได้อย่างเดียว)
-  async function getPublicToken() {
-    const res = await fetch(`${TB_HOST}/api/auth/login/public`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ publicId: TB_PUBLIC_ID })
-    });
-    const data = await res.json();
-    jwtToken = data.token;
-  }
-
-  // ดึงค่าล่าสุดจาก Parking Gateway
-  async function fetchParkingData() {
-    try {
-      if (!jwtToken) await getPublicToken();
-
-      const url = `${TB_HOST}/api/plugins/telemetry/DEVICE/${TB_DEVICE_ID}/values/timeseries?keys=node,obj,bat`;
-      const res = await fetch(url, {
-        headers: { "X-Authorization": `Bearer ${jwtToken}` }
-      });
-
-      // หาก Token หมดอายุ ให้ขอใหม่
-      if (res.status === 401) {
-        await getPublicToken();
-        return;
-      }
-
-      const data = await res.json();
-      if (data.obj && data.obj.length > 0) {
-        const objVal = Number(data.obj[0].value);
-        const isOccupied = (objVal === 0); // 0 = มีรถจอด (ไม่ว่าง), 1 = ไม่มีรถ (ว่าง)
-
-        console.log("อัปเดตสถานะช่อง 01:", isOccupied ? "ไม่ว่าง (0)" : "ว่าง (1)");
-        
-        // *** เรียกฟังก์ชันอัปเดตหน้าเว็บช่อง 01 ของคุณตรงนี้ ***
-        updateSlot01UI(isOccupied);
-      }
-    } catch (err) {
-      console.error("เชื่อมต่อ ThingsBoard ไม่สำเร็จ:", err);
-    }
-  }
-
-  // ฟังก์ชันตัวอย่างสำหรับเปลี่ยนข้อความ/สีในหน้าเว็บ (ปรับชื่อ ID ให้ตรงกับ HTML ของคุณ)
-  function updateSlot01UI(isOccupied) {
-    // ตัวอย่าง: เปลี่ยนข้อความ "รอข้อมูล" เป็น "ไม่ว่าง" หรือ "ว่าง"
-    // หากคุณส่งไฟล์ index.html มา ผมจะแก้ชื่อตัวแปรตรงนี้ให้ตรงกับหน้าเว็บของคุณ 100%
-  }
-
-  // สั่งดึงข้อมูลทันทีที่เปิดเว็บ และอัปเดตซ้ำทุก 2 วินาที
-  fetchParkingData();
-  setInterval(fetchParkingData, 2000);
-</script>
     <script src="app.js"></script>
 </body>
 </html>
