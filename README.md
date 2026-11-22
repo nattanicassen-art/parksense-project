@@ -2,7 +2,7 @@
 ระบบตรวจสอบสถานะที่จอดรถแบบเรียลไทม์ (Real-time Parking Status Monitoring)
 
 ## 🌐 ลิงก์เข้าใช้งาน (Live Demo)
-สามารถเปิดดูสถานะที่จอดรถได้ที่: https://nattanicassen-art.github.io/parksense-project/
+สามารถเปิดดูสถานะที่จอดรถได้ที่: https://nattanicassen-art.github.io/parksense-project/?v=2
 
 ## 📂 โครงสร้างไฟล์ในโปรเจกต์
 - `index.html` — หน้าแสดงผลสถานะที่จอดรถ (ว่าง / ไม่ว่าง) สำหรับผู้ใช้งานทั่วไป
