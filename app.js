@@ -9,7 +9,7 @@ const $ = id => document.getElementById(id);  // ตัวช่วยหา ele
 // *** แก้ไขเฉพาะ 2 บรรทัด (publicId และ deviceId) ด้านล่างนี้ ***
 const CONFIG = {
     host: 'https://thingsboard.cloud',        // URL ของ ThingsBoard
-    publicId: 'u9c86lIG9pXixsiBuiis',          // Public ID ที่ได้จากปุ่มรูปโล่
+    publicId: '04cdce10-e698-11f1-9e1c-c93dd85f5a1f',          // Public ID ที่ได้จากปุ่มรูปโล่
     deviceId: 'df5c12d0-e107-11f1-bf4d-5ba6e9bd2b60',          // Device ID ของ Parking Gateway
     keys: ['obj'],                            // คีย์ที่บอร์ดส่งมา (0 = มีรถ, 1 = ว่าง)
     distKeys: [],
