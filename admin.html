@@ -18,196 +18,26 @@
     .stat-num { font-size: 24px; font-weight: bold; margin-top: 5px; }
     .text-green { color: #10b981; } .text-red { color: #ef4444; } .text-yellow { color: #f59e0b; }
 
-    .floors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
-    .floor-card { background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 12px; transition: 0.3s; }
-    .floor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #334155; }
+    .floors-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+    .floor-card { background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 15px; transition: 0.3s; }
+    .floor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #334155; }
     .floor-title { font-size: 16px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
 
-    .floor-actions { display: flex; gap: 5px; margin-bottom: 10px; }
-    .btn-xs { border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; }
+    .floor-actions { display: flex; gap: 5px; }
+    .btn-xs { border: none; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
     .btn-full { background: #ef4444; color: white; }
     .btn-reset { background: #475569; color: white; }
 
-    .slots-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #0f172a; padding: 10px; border-radius: 8px; }
-    .slot { border: 2px solid #334155; background: #1e293b; border-radius: 6px; padding: 8px; text-align: center; cursor: pointer; user-select: none; transition: 0.2s; position: relative; }
+    /* ปรับเป็น 3 คอลัมน์ให้เรียงสวยพอดีกับ 3 ช่อง */
+    .slots-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: #0f172a; padding: 12px; border-radius: 8px; }
+    .slot { border: 2px solid #334155; background: #1e293b; border-radius: 8px; padding: 14px 8px; text-align: center; cursor: pointer; user-select: none; transition: 0.2s; position: relative; }
     .slot:hover { transform: translateY(-2px); border-color: #38bdf8; }
-    .slot-id { font-weight: bold; font-size: 13px; }
-    .slot-state { font-size: 11px; margin-top: 2px; }
+    .slot-id { font-weight: bold; font-size: 15px; }
+    .slot-state { font-size: 12px; margin-top: 4px; }
 
     .slot.available { border-color: #10b981; background: rgba(16, 185, 129, 0.1); color: #10b981; }
     .slot.occupied { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; }
     .slot.error { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
 
     .admin-tools { margin-top: 15px; background: #1e293b; border-radius: 12px; padding: 15px; border: 1px solid #334155; }
-    .log-box { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: monospace; font-size: 12px; color: #94a3b8; height: 100px; overflow-y: auto; margin-top: 10px; }
-    .instruction-note { font-size: 12px; color: #94a3b8; margin-top: 5px; }
-  </style>
-</head>
-<body>
-
-  <div class="admin-header">
-    <div class="admin-title">
-      <span>🚗 ParkSense Admin Control Center</span>
-      <span class="badge-admin">LIVE CONNECTED</span>
-    </div>
-    <div style="font-size: 13px; color: #94a3b8;" id="live-clock">● LIVE</div>
-  </div>
-
-  <!-- สรุปตัวเลขสถานะลานจอด -->
-  <div class="stats-bar">
-    <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">ว่างทั้งหมด</div><div class="stat-num text-green" id="count-available">0</div></div>
-    <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">ไม่ว่าง</div><div class="stat-num text-red" id="count-occupied">0</div></div>
-    <div class="stat-card"><div style="font-size:12px; color:#94a3b8;">เซนเซอร์มีปัญหา</div><div class="stat-num text-yellow" id="count-error">0</div></div>
-  </div>
-
-  <div class="floors-grid">
-    <div class="floor-card">
-      <div class="floor-header">
-        <div class="floor-title"><span>🏢 ชั้น 4</span></div>
-        <div class="floor-actions">
-          <button class="btn-xs btn-full" onclick="setFloorStatus(4, 'occupied')">ตั้งเต็ม</button>
-          <button class="btn-xs btn-reset" onclick="setFloorStatus(4, 'available')">รีเซ็ต</button>
-        </div>
-      </div>
-      <div class="slots-container" id="floor-4-slots"></div>
-    </div>
-
-    <div class="floor-card">
-      <div class="floor-header">
-        <div class="floor-title"><span>🏢 ชั้น 3</span></div>
-        <div class="floor-actions">
-          <button class="btn-xs btn-full" onclick="setFloorStatus(3, 'occupied')">ตั้งเต็ม</button>
-          <button class="btn-xs btn-reset" onclick="setFloorStatus(3, 'available')">รีเซ็ต</button>
-        </div>
-      </div>
-      <div class="slots-container" id="floor-3-slots"></div>
-    </div>
-
-    <div class="floor-card">
-      <div class="floor-header">
-        <div class="floor-title"><span>🏢 ชั้น 2</span></div>
-        <div class="floor-actions">
-          <button class="btn-xs btn-full" onclick="setFloorStatus(2, 'occupied')">ตั้งเต็ม</button>
-          <button class="btn-xs btn-reset" onclick="setFloorStatus(2, 'available')">รีเซ็ต</button>
-        </div>
-      </div>
-      <div class="slots-container" id="floor-2-slots"></div>
-    </div>
-
-    <div class="floor-card">
-      <div class="floor-header">
-        <div class="floor-title"><span>🏢 ชั้น 1</span></div>
-        <div class="floor-actions">
-          <button class="btn-xs btn-full" onclick="setFloorStatus(1, 'occupied')">ตั้งเต็ม</button>
-          <button class="btn-xs btn-reset" onclick="setFloorStatus(1, 'available')">รีเซ็ต</button>
-        </div>
-      </div>
-      <div class="slots-container" id="floor-1-slots"></div>
-    </div>
-  </div>
-
-  <div class="admin-tools">
-    <div style="font-weight: bold; font-size: 14px;">📋 บันทึกการทำงานฮาร์ดแวร์และเซนเซอร์ (Live ThingsBoard Telemetry)</div>
-    <div class="instruction-note">💡 **คำแนะนำการใช้งาน:** คลิกที่ช่องจอดบนผังเพื่อเปลี่ยนสถานะวนไป: **ว่าง ➔ ไม่ว่าง ➔ เซนเซอร์ขัดข้อง**</div>
-    <div class="log-box" id="log-output">
-      > [System initialized] กำลังเชื่อมต่อสัญญาณกับ ThingsBoard Cloud...<br>
-    </div>
-  </div>
-
-  <script>
-    const floors = [4, 3, 2, 1];
-    const spotsPerFloor = 6;
-    // ลบ 'reserved' ออก เหลือแค่ 3 สถานะ
-    const states = ['available', 'occupied', 'error'];
-    const stateLabels = {
-      'available': 'ว่าง',
-      'occupied': 'ไม่ว่าง',
-      'error': '⚠️ เซนเซอร์ขัดข้อง'
-    };
-
-    let parkingData = {};
-
-    function initParkingData() {
-      floors.forEach(floor => {
-        const container = document.getElementById(`floor-${floor}-slots`);
-        container.innerHTML = '';
-        for (let i = 1; i <= spotsPerFloor; i++) {
-          const spotId = `F${floor}-0${i}`;
-          parkingData[spotId] = 'available';
-
-          const slotEl = document.createElement('div');
-          slotEl.className = `slot available`;
-          slotEl.id = `slot-${spotId}`;
-          slotEl.onclick = () => toggleSpotStatus(spotId);
-          slotEl.innerHTML = `
-            <div class="slot-id">${spotId}</div>
-            <div class="slot-state" id="state-text-${spotId}">ว่าง</div>
-          `;
-          container.appendChild(slotEl);
-        }
-      });
-      updateStats();
-    }
-
-    function toggleSpotStatus(spotId) {
-      const currentState = parkingData[spotId];
-      const currentIndex = states.indexOf(currentState);
-      const nextState = states[(currentIndex + 1) % states.length];
-
-      updateSingleSpot(spotId, nextState);
-      addLog(`[ADMIN OVERRIDE] ปรับช่อง [${spotId}] เป็น "${stateLabels[nextState]}"`);
-    }
-
-    function updateSingleSpot(spotId, newState) {
-      parkingData[spotId] = newState;
-      const slotEl = document.getElementById(`slot-${spotId}`);
-      if(slotEl) {
-        slotEl.className = `slot ${newState}`;
-        document.getElementById(`state-text-${spotId}`).innerText = stateLabels[newState];
-      }
-      updateStats();
-    }
-
-    function setFloorStatus(floor, targetState) {
-      for (let i = 1; i <= spotsPerFloor; i++) {
-        const spotId = `F${floor}-0${i}`;
-        updateSingleSpot(spotId, targetState);
-      }
-      addLog(`[ADMIN COMMAND] สั่งปรับสถานะ [ชั้น ${floor}] เป็น "${stateLabels[targetState]}" ทั้งชั้น`);
-    }
-
-    function updateStats() {
-      let available = 0, occupied = 0, error = 0;
-      Object.values(parkingData).forEach(state => {
-        if (state === 'available') available++;
-        if (state === 'occupied') occupied++;
-        if (state === 'error') error++;
-      });
-
-      document.getElementById('count-available').innerText = available;
-      document.getElementById('count-occupied').innerText = occupied;
-      document.getElementById('count-error').innerText = error;
-    }
-
-    function addLog(message) {
-      const logBox = document.getElementById('log-output');
-      const time = new Date().toLocaleTimeString();
-      logBox.innerHTML = `> [${time}] ${message}<br>` + logBox.innerHTML;
-    }
-
-    function simulateIncomingSensorData(spotId, isOccupied, distance) {
-      const newState = isOccupied ? 'occupied' : 'available';
-      if (parkingData[spotId] !== newState) {
-        updateSingleSpot(spotId, newState);
-        addLog(`[HARDWARE LORA] อุปกรณ์ส่งค่า [${spotId}]: ระยะ ${distance}mm ➔ สถานะ: ${stateLabels[newState]}`);
-      }
-    }
-
-    setInterval(() => {
-      document.getElementById('live-clock').innerText = '● LIVE ' + new Date().toLocaleTimeString();
-    }, 1000);
-
-    initParkingData();
-  </script>
-</body>
-</html>
+    .log-box { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: monospace; font-size: 1
