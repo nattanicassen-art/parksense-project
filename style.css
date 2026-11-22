@@ -1,3 +1,8 @@
+/* =====================================================
+   ParkSense - style.css
+   หน้าตาของเว็บ (สี ขนาด เงา) ใช้คู่กับ index.html และ app.js
+   เวอร์ชันนี้: ชั้น 1 ชั้นเดียว 3 ช่องจอด รับค่าจากบอร์ดจริง
+   ===================================================== */
 :root {
     --bg: #eef2f7;
     --card: #fff;
@@ -317,91 +322,6 @@ header {
     vertical-align: 0;
 }
 
-.rd {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.lane {
-    position: relative;
-    overflow: hidden;
-    height: 64px;
-    border-radius: 14px;
-    background: linear-gradient(#475569, #334155);
-    border: 1px solid #334155;
-    box-shadow: inset 0 3px 8px #0005;
-}
-
-.lane::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 55%;
-    border-top: 3px dashed #ffffff77;
-}
-
-.lane em {
-    position: absolute;
-    left: 10px;
-    top: 6px;
-    font-style: normal;
-    font-size: 12px;
-    color: #e2e8f0;
-    font-weight: 500;
-    z-index: 1;
-}
-
-.lane u {
-    position: absolute;
-    top: 6px;
-    left: -12%;
-    width: 26px;
-    height: 52px;
-    opacity: 0;
-    z-index: 1;
-    font-size: 0;
-    text-decoration: none;
-}
-
-.lane u svg {
-    width: 26px;
-    height: 52px;
-    display: block;
-}
-
-.lane u.in svg {
-    transform: rotate(90deg);
-}
-
-.lane u.out svg {
-    transform: rotate(-90deg);
-}
-
-.lane u.in.go {
-    animation: drive 2.2s linear;
-}
-
-.lane u.out.go {
-    animation: back 2.2s linear;
-}
-
-@keyframes drive {
-    0% { left: -12%; opacity: 0; }
-    12% { opacity: 1; }
-    88% { opacity: 1; }
-    100% { left: 104%; opacity: 0; }
-}
-
-@keyframes back {
-    0% { left: 104%; opacity: 0; }
-    12% { opacity: 1; }
-    88% { opacity: 1; }
-    100% { left: -12%; opacity: 0; }
-}
-
 .hero {
     border-radius: 24px;
     padding: 16px;
@@ -550,19 +470,6 @@ header {
     background-size: 18px 18px;
 }
 
-.sec {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--mu);
-    margin: 18px 4px 8px;
-}
-
-@media (min-width: 760px) {
-    .grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
 @media (max-width: 520px) {
     .sum b {
         font-size: 38px;
@@ -570,4 +477,132 @@ header {
     .sum span {
         font-size: 15px;
     }
+}
+
+/* ---------- ส่วนที่เพิ่มสำหรับเวอร์ชัน 1 ชั้น / รับค่าจากบอร์ดจริง ---------- */
+
+/* ชั้นเดียว: แสดงการ์ดเดียวกึ่งกลางหน้า */
+.grid {
+    display: block;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* ป้าย LIVE: สีเทาเมื่อยังไม่ได้รับข้อมูลจากบอร์ด (คลาส off) */
+.hero .live.off {
+    background: #ffffff1f;
+}
+
+.hero .live.off b {
+    background: #94a3b8;
+    animation: none;
+}
+
+/* ไฟสถานะสีเทา = ยังไม่มีข้อมูล */
+.lamp.n {
+    background: #94a3b8;
+    box-shadow: 0 0 0 3px #94a3b833;
+}
+
+/* ช่องที่ยังไม่รู้สถานะ (รอข้อมูลจากเซนเซอร์) */
+.plan .bu {
+    fill: #94a3b822;
+    stroke: #94a3b8;
+    stroke-width: 1.6;
+    stroke-dasharray: 6 5;
+}
+
+.plan .wait {
+    fill: var(--mu);
+    font-weight: 500;
+}
+
+/* ช่องที่เพิ่งเปลี่ยนสถานะจะกะพริบเบาๆ */
+.plan .fl2 {
+    animation: chg 1.4s;
+}
+
+@keyframes chg {
+    0% {
+        opacity: .15;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ผังช่องจอดอยู่กึ่งกลางการ์ด */
+.pv {
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+/* รายการสถานะแต่ละช่อง ใต้ผัง */
+.slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 12px 4px 4px;
+}
+
+.sl {
+    border-radius: 14px;
+    padding: 8px 4px;
+    text-align: center;
+    border: 1px solid var(--bd);
+    background: #94a3b814;
+}
+
+.sl b {
+    display: block;
+    font-size: 13px;
+    color: var(--mu);
+    font-weight: 500;
+}
+
+.sl span {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.sl small {
+    display: block;
+    font-size: 11px;
+    color: var(--mu);
+    min-height: 14px;
+}
+
+.sl.f {
+    background: #22c55e22;
+    border-color: #16a34a;
+}
+
+.sl.f span {
+    color: #15803d;
+}
+
+.sl.o {
+    background: #ef444422;
+    border-color: #ef4444;
+}
+
+.sl.o span {
+    color: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+    .sl.f span {
+        color: #4ade80;
+    }
+    .sl.o span {
+        color: #f87171;
+    }
+}
+
+.upd {
+    text-align: center;
+    color: var(--mu);
+    font-size: 12px;
+    margin: 6px 0 0;
 }

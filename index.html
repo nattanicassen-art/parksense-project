@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>ParkSense – สถานะที่จอดรถ</title>
+    <title>ParkSense – สถานะที่จอดรถ ชั้น 1</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="wrap">
+
+        <!-- ส่วนหัว: ชื่อระบบ สถานะการเชื่อมต่อ และจำนวนช่องว่าง/ไม่ว่าง -->
         <div class="hero">
             <header>
                 <div class="lg">
@@ -19,7 +21,7 @@
                     </div>
                 </div>
                 <div class="rt">
-                    <span class="live"><b></b>LIVE</span>
+                    <span class="live off" id="live"><b></b><span id="lt">รอข้อมูลจากบอร์ด</span></span>
                     <span id="clk"></span>
                 </div>
             </header>
@@ -27,22 +29,40 @@
                 <div class="c g">
                     <span class="lamp g"></span>
                     <span>ว่าง</span>
-                    <b id="nfree">0</b>
+                    <b id="nfree">–</b>
                 </div>
                 <div class="c r">
                     <span class="lamp r"></span>
                     <span>ไม่ว่าง</span>
-                    <b id="nocc">0</b>
+                    <b id="nocc">–</b>
                 </div>
             </div>
         </div>
 
-        <div class="grid" id="grid"></div>
+        <!-- การ์ดชั้น 1: ผังช่องจอด 3 ช่อง (app.js วาดลงในกล่อง #pv และ #slots) -->
+        <div class="grid">
+            <div class="fc" id="fc">
+                <div class="hd">
+                    <span class="fn">1</span>
+                    <b>ชั้น 1</b>
+                    <span class="lamp n" id="lp"></span>
+                    <div class="pls">
+                        <span class="pill g">ว่าง <em id="a">–</em></span>
+                        <span class="pill r">ไม่ว่าง <em id="b">–</em></span>
+                    </div>
+                </div>
+                <div class="pv" id="pv"></div>
+                <div class="slots" id="slots"></div>
+            </div>
+        </div>
 
+        <!-- คำอธิบายสี -->
         <div class="lgd">
             <span><i style="background:#22c55e55;border:2px solid #16a34a"></i>ว่าง</span>
             <span><i style="background:#ef444430;border:1px solid var(--tx)"></i>มีรถจอด</span>
+            <span><i style="background:#94a3b822;border:1px dashed #94a3b8"></i>รอข้อมูล</span>
         </div>
+        <p class="upd" id="upd">ยังไม่ได้รับข้อมูลจากบอร์ด</p>
     </div>
 
     <script src="app.js"></script>
