@@ -6,15 +6,14 @@
 const N = 3;                                  // จำนวนช่องจอดทั้งหมด (ชั้น 1)
 const $ = id => document.getElementById(id);  // ตัวช่วยหา element จาก id
 
-// *** แก้ไขเฉพาะ 2 บรรทัด (publicId และ deviceId) ด้านล่างนี้ ***
 const CONFIG = {
-    host: 'https://thingsboard.cloud',        // URL ของ ThingsBoard
-    publicId: '04cdce10-e698-11f1-9e1c-c93dd85f5a1f',          // Public ID ที่ได้จากปุ่มรูปโล่
-    deviceId: 'df5c12d0-e107-11f1-bf4d-5ba6e9bd2b60',          // Device ID ของ Parking Gateway
-    keys: ['obj'],                            // คีย์ที่บอร์ดส่งมา (0 = มีรถ, 1 = ว่าง)
+    host: 'https://thingsboard.cloud',                        // URL ของ ThingsBoard
+    publicId: '04cdce10-e698-11f1-9e1c-c93dd85f5a1f',        // Public ID
+    deviceId: 'df5c12d0-e107-11f1-bf4d-5ba6e9bd2b60',        // Device ID ของ Parking Gateway
+    keys: ['obj'],                                            // คีย์ที่บอร์ดส่งมา (0 = ว่าง, 1 = มีรถ)
     distKeys: [],
-    pollMs: 2000,                             // ดึงข้อมูลใหม่ทุก 2 วินาที
-    staleMs: 30000                            // ข้อมูลเก่ากว่า 30 วินาที ถือว่าบอร์ดหยุดส่ง
+    pollMs: 2000,                                             // ดึงข้อมูลใหม่ทุก 2 วินาที
+    staleMs: 30000                                            // ข้อมูลเก่ากว่า 30 วินาที ถือว่าบอร์ดหยุดส่ง
 };
 
 /* ---------- 2) ข้อมูลสถานะ ---------- */
@@ -141,13 +140,12 @@ async function pollThingsBoard() {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const d = await r.json();
 
-        // แปลงค่าจากบอร์ด (0 = มีรถ, 1 = ว่าง -> สลับให้ตรงกับหน้าเว็บที่ 1 = มีรถ, 0 = ว่าง)
+        // ใช้ค่าจากบอร์ดโดยตรง (0 = ว่าง, 1 = มีรถจอด)
         let slot1 = null;
         let ts = 0;
         if (d.obj && d.obj[0]) {
             const rawObj = Number(d.obj[0].value);
-            if (rawObj === 0) slot1 = 1;       // 0 จากบอร์ด = มีรถจอด
-            else if (rawObj === 1) slot1 = 0;  // 1 จากบอร์ด = ว่าง
+            if (rawObj === 0 || rawObj === 1) slot1 = rawObj;
             ts = d.obj[0].ts;
         }
 
