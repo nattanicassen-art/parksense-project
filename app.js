@@ -167,3 +167,4 @@ $('clk').textContent = tm();
 setInterval(() => { $('clk').textContent = tm(); }, 1000);
 pollThingsBoard();
 setInterval(pollThingsBoard, CONFIG.pollMs);
+ 
